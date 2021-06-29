@@ -1,0 +1,4 @@
+rootProject.name = "FawryIdentification"
+include ':app'
+include ':FawryIdentification'
+include ':openCVLibrary3414'
