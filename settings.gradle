@@ -1,4 +1,4 @@
 rootProject.name = "FawryIdentification"
 include ':app'
-include ':FawryIdentification'
+include ':FawryIdentificationSDK'
 include ':openCVLibrary3414'
