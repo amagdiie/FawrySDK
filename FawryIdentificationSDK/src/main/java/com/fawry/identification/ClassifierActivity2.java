@@ -18,7 +18,7 @@ import com.fawry.identification.tflite.Classifier.Model;
 import java.io.IOException;
 import java.util.List;
 
-public class ClassifierActivity2 extends com.fawry.identification.CameraActivity2 implements OnImageAvailableListener {
+public class ClassifierActivity2 extends CameraActivity2 implements OnImageAvailableListener {
   private static final Logger LOGGER = new Logger();
   private static final Size DESIRED_PREVIEW_SIZE = new Size(640, 480);
   private static final float TEXT_SIZE_DIP = 10;

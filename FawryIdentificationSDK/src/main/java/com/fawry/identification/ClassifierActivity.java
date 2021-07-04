@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.fawry.identification.env.BorderedText;
 import com.fawry.identification.env.Logger;
+import com.fawry.identification.fragments.FrontIDScan;
 import com.fawry.identification.tflite.Classifier;
 import com.fawry.identification.tflite.Classifier.Device;
 import com.fawry.identification.tflite.Classifier.Model;

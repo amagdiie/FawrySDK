@@ -8,34 +8,43 @@
     android:gravity="center"
     tools:context=".MainActivity">
 
-    <Button
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/frontId"
-        android:text="Front"
-        android:visibility="gone"/>
+<!--    <Button-->
+<!--        android:layout_margin="10dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/frontId"-->
+<!--        android:text="Front"-->
+<!--        android:visibility="gone"/>-->
 
-    <Button
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/backId"
-        android:text="Back"
-        android:visibility="gone"/>
+<!--    <Button-->
+<!--        android:layout_margin="10dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/backId"-->
+<!--        android:text="Back"-->
+<!--        android:visibility="gone"/>-->
 
-    <Button
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/faceId"
-        android:text="Recognition"
-        android:visibility="gone"/>
+<!--    <Button-->
+<!--        android:layout_margin="10dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/faceId"-->
+<!--        android:text="Recognition"-->
+<!--        android:visibility="gone"/>-->
 
-    <Button
-        android:layout_margin="10dp"
+<!--    <Button-->
+<!--        android:layout_margin="10dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/startScan"-->
+<!--        android:text="Start Scan" />-->
+
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/startScan"
-        android:text="Start Scan" />
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
 </LinearLayout>
