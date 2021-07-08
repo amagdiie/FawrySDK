@@ -104,9 +104,6 @@ public abstract class FrontIDScan extends BaseFragment implements ImageReader.On
     private int yRowStride;
     private Runnable postInferenceCallback;
     private Runnable imageConverter;
-    private LinearLayout bottomSheetLayout;
-    private LinearLayout gestureLayout;
-    private BottomSheetBehavior sheetBehavior;
     protected TextView recognitionTextView,
             recognition1TextView,
             recognitionValueTextView,
@@ -116,11 +113,6 @@ public abstract class FrontIDScan extends BaseFragment implements ImageReader.On
             cameraResolutionTextView,
             rotationTextView,
             inferenceTimeTextView;
-    protected ImageView bottomSheetArrowImageView;
-    private ImageView plusImageView, minusImageView;
-    private Spinner modelSpinner;
-    private Spinner deviceSpinner;
-    private TextView threadsTextView;
 
     // private Model model = Model.QUANTIZED;
     private Classifier.Model model = Classifier.Model.FLOAT;
@@ -156,83 +148,7 @@ public abstract class FrontIDScan extends BaseFragment implements ImageReader.On
         mTextTess = mView.findViewById(R.id.testTextTess);
         lottieAnimationView = mView.findViewById(R.id.animationView);
         mFrame = mView.findViewById(R.id.container);
-        threadsTextView = mView.findViewById(R.id.threads);
-        plusImageView = mView.findViewById(R.id.plus);
-        minusImageView = mView.findViewById(R.id.minus);
-        modelSpinner = mView.findViewById(R.id.model_spinner);
-        deviceSpinner = mView.findViewById(R.id.device_spinner);
-        bottomSheetLayout = mView.findViewById(R.id.bottom_sheet_layout);
-        gestureLayout = mView.findViewById(R.id.gesture_layout);
-        sheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
-        bottomSheetArrowImageView = mView.findViewById(R.id.bottom_sheet_arrow);
 
-        ViewTreeObserver vto = gestureLayout.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                            gestureLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        } else {
-                            gestureLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        }
-                        //                int width = bottomSheetLayout.getMeasuredWidth();
-                        int height = gestureLayout.getMeasuredHeight();
-
-                        sheetBehavior.setPeekHeight(height);
-                    }
-                });
-        sheetBehavior.setHideable(false);
-
-        sheetBehavior.setBottomSheetCallback(
-                new BottomSheetBehavior.BottomSheetCallback() {
-                    @Override
-                    public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                        switch (newState) {
-                            case BottomSheetBehavior.STATE_HIDDEN:
-                                break;
-                            case BottomSheetBehavior.STATE_EXPANDED:
-                            {
-                                bottomSheetArrowImageView.setImageResource(R.drawable.icn_chevron_down);
-                            }
-                            break;
-                            case BottomSheetBehavior.STATE_COLLAPSED:
-                            {
-                                bottomSheetArrowImageView.setImageResource(R.drawable.icn_chevron_up);
-                            }
-                            break;
-                            case BottomSheetBehavior.STATE_DRAGGING:
-                                break;
-                            case BottomSheetBehavior.STATE_SETTLING:
-                                bottomSheetArrowImageView.setImageResource(R.drawable.icn_chevron_up);
-                                break;
-                        }
-                    }
-
-                    @Override
-                    public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
-                });
-
-        recognitionTextView = mView.findViewById(R.id.detected_item);
-        recognitionValueTextView = mView.findViewById(R.id.detected_item_value);
-        recognition1TextView = mView.findViewById(R.id.detected_item1);
-        recognition1ValueTextView = mView.findViewById(R.id.detected_item1_value);
-
-        frameValueTextView = mView.findViewById(R.id.frame_info);
-        cropValueTextView = mView.findViewById(R.id.crop_info);
-        cameraResolutionTextView = mView.findViewById(R.id.view_info);
-        rotationTextView = mView.findViewById(R.id.rotation_info);
-        inferenceTimeTextView = mView.findViewById(R.id.inference_info);
-
-        modelSpinner.setOnItemSelectedListener(this);
-        deviceSpinner.setOnItemSelectedListener(this);
-
-        plusImageView.setOnClickListener(this);
-        minusImageView.setOnClickListener(this);
-
-        model = Classifier.Model.valueOf(modelSpinner.getSelectedItem().toString().toUpperCase());
-        device = Classifier.Device.valueOf(deviceSpinner.getSelectedItem().toString());
-        numThreads = Integer.parseInt(threadsTextView.getText().toString().trim());
 
     }
 
@@ -655,9 +571,6 @@ public abstract class FrontIDScan extends BaseFragment implements ImageReader.On
             LOGGER.d("Updating  device: " + device);
             this.device = device;
             final boolean threadsEnabled = device == Classifier.Device.CPU;
-            plusImageView.setEnabled(threadsEnabled);
-            minusImageView.setEnabled(threadsEnabled);
-            threadsTextView.setText(threadsEnabled ? String.valueOf(numThreads) : "N/A");
             onInferenceConfigurationChanged();
         }
     }
@@ -686,30 +599,11 @@ public abstract class FrontIDScan extends BaseFragment implements ImageReader.On
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.plus) {
-            String threads = threadsTextView.getText().toString().trim();
-            int numThreads = Integer.parseInt(threads);
-            if (numThreads >= 9) return;
-            setNumThreads(++numThreads);
-            threadsTextView.setText(String.valueOf(numThreads));
-        } else if (v.getId() == R.id.minus) {
-            String threads = threadsTextView.getText().toString().trim();
-            int numThreads = Integer.parseInt(threads);
-            if (numThreads == 1) {
-                return;
-            }
-            setNumThreads(--numThreads);
-            threadsTextView.setText(String.valueOf(numThreads));
-        }
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        if (parent == modelSpinner) {
-            setModel(Classifier.Model.valueOf(parent.getItemAtPosition(pos).toString().toUpperCase()));
-        } else if (parent == deviceSpinner) {
-            setDevice(Classifier.Device.valueOf(parent.getItemAtPosition(pos).toString()));
-        }
+
     }
 
     @Override

@@ -80,31 +80,25 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
     results = new ArrayList<>();
 
     runInBackground(
-        new Runnable() {
-          @Override
-          public void run() {
-            if (classifier != null) {
-              final long startTime = SystemClock.uptimeMillis();
-              results = classifier.recognizeImage(rgbFrameBitmap, sensorOrientation);
-              lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
-              LOGGER.v("Detect: %s", results);
+            () -> {
+              if (classifier != null) {
+                final long startTime = SystemClock.uptimeMillis();
+                results = classifier.recognizeImage(rgbFrameBitmap, sensorOrientation);
+                lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
+                LOGGER.v("Detect: %s", results);
 
-              runOnUiThread(
-                  new Runnable() {
-                    @Override
-                    public void run() {
-                      showResultsInBottomSheet(results);
-                      showFrameInfo(previewWidth + "x" + previewHeight);
-                      showCropInfo(imageSizeX + "x" + imageSizeY);
-                      showCameraResolution(cropSize + "x" + cropSize);
-                      showRotationInfo(String.valueOf(sensorOrientation));
-                      showInference(lastProcessingTimeMs + "ms");
-                    }
-                  });
-            }
-            readyForNextImage();
-          }
-        });
+                runOnUiThread(
+                        () -> {
+                          showResultsInBottomSheet(results);
+    //                      showFrameInfo(previewWidth + "x" + previewHeight);
+    //                      showCropInfo(imageSizeX + "x" + imageSizeY);
+    //                      showCameraResolution(cropSize + "x" + cropSize);
+    //                      showRotationInfo(String.valueOf(sensorOrientation));
+    //                      showInference(lastProcessingTimeMs + "ms");
+                        });
+              }
+              readyForNextImage();
+            });
   }
 
   @Override
