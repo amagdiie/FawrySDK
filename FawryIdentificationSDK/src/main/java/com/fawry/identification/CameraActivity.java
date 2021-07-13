@@ -68,7 +68,7 @@ public abstract class CameraActivity extends AppCompatActivity
 
   // Storage Permissions
   private static final int REQUEST_EXTERNAL_STORAGE = 1;
-  private static String[] PERMISSIONS_STORAGE = {
+  private static final String[] PERMISSIONS_STORAGE = {
           Manifest.permission.READ_EXTERNAL_STORAGE,
           Manifest.permission.WRITE_EXTERNAL_STORAGE
   };
@@ -82,9 +82,9 @@ public abstract class CameraActivity extends AppCompatActivity
   private Bitmap bitmap;
 
 //  private static final String TAG = "OCVSample::AddFace";
-  private Mat mRgba;
-  private Mat mRgbaF;
-  private Mat mRgbaT;
+//  private Mat mRgba;
+//  private Mat mRgbaF;
+//  private Mat mRgbaT;
 
 
   private static final Logger LOGGER = new Logger();
@@ -103,6 +103,7 @@ public abstract class CameraActivity extends AppCompatActivity
   private int yRowStride;
   private Runnable postInferenceCallback;
   private Runnable imageConverter;
+
 //  private LinearLayout bottomSheetLayout;
 //  private LinearLayout gestureLayout;
 //  private BottomSheetBehavior sheetBehavior;
@@ -120,8 +121,8 @@ public abstract class CameraActivity extends AppCompatActivity
 //  private Spinner modelSpinner;
 //  private Spinner deviceSpinner;
 //  private TextView threadsTextView;
+//   private Model model = Model.QUANTIZED;
 
-  // private Model model = Model.QUANTIZED;
   private Model model = Model.FLOAT;
   private Device device = Device.CPU;
   private int numThreads = -1;
