@@ -83,17 +83,14 @@ public class ClassifierActivity2 extends CameraActivity2 implements OnImageAvail
               LOGGER.v("Detect: %s", results);
 
               runOnUiThread(
-                  new Runnable() {
-                    @Override
-                    public void run() {
-                      showResultsInBottomSheet(results);
-                      showFrameInfo(previewWidth + "x" + previewHeight);
-                      showCropInfo(imageSizeX + "x" + imageSizeY);
-                      showCameraResolution(cropSize + "x" + cropSize);
-                      showRotationInfo(String.valueOf(sensorOrientation));
-                      showInference(lastProcessingTimeMs + "ms");
-                    }
-                  });
+                      () -> {
+                        showResultsInBottomSheet(results);
+  //                      showFrameInfo(previewWidth + "x" + previewHeight);
+  //                      showCropInfo(imageSizeX + "x" + imageSizeY);
+  //                      showCameraResolution(cropSize + "x" + cropSize);
+  //                      showRotationInfo(String.valueOf(sensorOrientation));
+  //                      showInference(lastProcessingTimeMs + "ms");
+                      });
             }
             readyForNextImage();
           }
