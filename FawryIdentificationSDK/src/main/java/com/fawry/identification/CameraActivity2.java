@@ -53,6 +53,9 @@ import java.nio.ByteBuffer;
 import java.util.Date;
 import java.util.List;
 
+import static com.fawry.identification.tflite.OpjectsModels.BackConfig;
+import static com.fawry.identification.tflite.OpjectsModels.BackIDImage;
+
 public abstract class CameraActivity2 extends AppCompatActivity
         implements ImageReader.OnImageAvailableListener,
         Camera.PreviewCallback,
@@ -77,7 +80,6 @@ public abstract class CameraActivity2 extends AppCompatActivity
     private int yRowStride;
     private Runnable postInferenceCallback;
     private Runnable imageConverter;
-    private OpjectsModels opjectsModels;
 
 //    private LinearLayout bottomSheetLayout;
 //    private LinearLayout gestureLayout;
@@ -556,8 +558,8 @@ public abstract class CameraActivity2 extends AppCompatActivity
                             @Override
                             public void onAnimationEnd(Animator animation) {
                                 mTextTess.setText(recognition.getTitle());
-                                opjectsModels.setBackConfig(String.valueOf(confi));
-                                opjectsModels.setBackIDImage(takeScreenshot(mFrame));
+                                BackConfig = (String.valueOf(confi));
+                                BackIDImage = (takeScreenshot(mFrame));
                                 Intent intent = new Intent(CameraActivity2.this, FdActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);

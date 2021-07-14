@@ -64,6 +64,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.fawry.identification.tflite.OpjectsModels.FrontConfig;
+import static com.fawry.identification.tflite.OpjectsModels.FrontIDImage;
+
 public abstract class CameraActivity extends AppCompatActivity
     implements OnImageAvailableListener,
         Camera.PreviewCallback,
@@ -108,8 +111,6 @@ public abstract class CameraActivity extends AppCompatActivity
   private int yRowStride;
   private Runnable postInferenceCallback;
   private Runnable imageConverter;
-
-  private OpjectsModels opjectsModels;
 
 //  private LinearLayout bottomSheetLayout;
 //  private LinearLayout gestureLayout;
@@ -595,8 +596,8 @@ public abstract class CameraActivity extends AppCompatActivity
               public void onAnimationEnd(Animator animation) {
 
                 mTextTess.setText(recognition.getTitle());
-                opjectsModels.setFrontConfig(String.valueOf(confi));
-                opjectsModels.setFrontIDImage(takeScreenshot(mFrame));
+                FrontConfig = String.valueOf(confi);
+                FrontIDImage = takeScreenshot(mFrame);
                 Intent intent = new Intent(CameraActivity.this, ClassifierActivity2.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

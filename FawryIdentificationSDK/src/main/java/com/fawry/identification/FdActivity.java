@@ -42,6 +42,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
+import static com.fawry.identification.tflite.OpjectsModels.CloseEYEImage;
+import static com.fawry.identification.tflite.OpjectsModels.OpenEYEImage;
+
 public class FdActivity extends Activity implements CvCameraViewListener2 {
 
     private static final String TAG = "OCVSample::Activity";
@@ -115,8 +118,6 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
     private Rect[] facesArray;
 
-
-    private OpjectsModels opjectsModels;
 
     //
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
@@ -268,7 +269,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
                 AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 10, 0);
                 beep.start();
-                opjectsModels.setCloseEYEImage(takeScreenshot(mOpenCvCameraView));
+                CloseEYEImage = (takeScreenshot(mOpenCvCameraView));
                 checkSecound();
             }, 5000);
         });
@@ -289,7 +290,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
                 AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 10, 0);
                 beep.start();
-                opjectsModels.setOpenEYEImage(takeScreenshot(mOpenCvCameraView));
+                OpenEYEImage = (takeScreenshot(mOpenCvCameraView));
                 onBackPressed();
                 finish();
             }, 5000);
