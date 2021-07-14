@@ -16,6 +16,7 @@ import android.media.Image;
 import android.media.ImageReader;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Trace;
@@ -40,12 +41,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.fawry.identification.tflite.OpjectsModels;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.fawry.identification.env.ImageUtils;
 import com.fawry.identification.env.Logger;
 import com.fawry.identification.tflite.Classifier;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
+import java.util.Date;
 import java.util.List;
 
 public abstract class CameraActivity2 extends AppCompatActivity
@@ -72,6 +77,8 @@ public abstract class CameraActivity2 extends AppCompatActivity
     private int yRowStride;
     private Runnable postInferenceCallback;
     private Runnable imageConverter;
+    private OpjectsModels opjectsModels;
+
 //    private LinearLayout bottomSheetLayout;
 //    private LinearLayout gestureLayout;
 //    private BottomSheetBehavior sheetBehavior;
@@ -549,6 +556,8 @@ public abstract class CameraActivity2 extends AppCompatActivity
                             @Override
                             public void onAnimationEnd(Animator animation) {
                                 mTextTess.setText(recognition.getTitle());
+                                opjectsModels.setBackConfig(String.valueOf(confi));
+                                opjectsModels.setBackIDImage(takeScreenshot(mFrame));
                                 Intent intent = new Intent(CameraActivity2.this, FdActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
@@ -573,6 +582,38 @@ public abstract class CameraActivity2 extends AppCompatActivity
 
         }
     }
+
+    private Bitmap takeScreenshot(View v1) {
+        Date now = new Date();
+        android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+
+        try {
+            // image naming and path  to include sd card  appending name you choose for file
+            String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
+
+            // create bitmap screen capture
+            v1.setDrawingCacheEnabled(true);
+            v1.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+            v1.buildDrawingCache();
+            Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+            v1.setDrawingCacheEnabled(false);
+            v1.destroyDrawingCache();
+
+            File imageFile = new File(mPath);
+
+            FileOutputStream outputStream = new FileOutputStream(imageFile);
+            int quality = 100;
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            outputStream.flush();
+            outputStream.close();
+            return bitmap;
+        } catch (Throwable e) {
+            // Several error may come out with file handling or DOM
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 //    protected void showFrameInfo(String frameInfo) {
 //        frameValueTextView.setText(frameInfo);

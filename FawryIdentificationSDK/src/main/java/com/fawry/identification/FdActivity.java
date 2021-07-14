@@ -2,9 +2,11 @@ package com.fawry.identification;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
@@ -15,6 +17,8 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+
+import com.fawry.identification.tflite.OpjectsModels;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
@@ -36,6 +40,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 public class FdActivity extends Activity implements CvCameraViewListener2 {
 
@@ -109,6 +114,9 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
     int check = 0;
 
     private Rect[] facesArray;
+
+
+    private OpjectsModels opjectsModels;
 
     //
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
@@ -260,6 +268,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
                 AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 10, 0);
                 beep.start();
+                opjectsModels.setCloseEYEImage(takeScreenshot(mOpenCvCameraView));
                 checkSecound();
             }, 5000);
         });
@@ -280,6 +289,8 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
                 AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 10, 0);
                 beep.start();
+                opjectsModels.setOpenEYEImage(takeScreenshot(mOpenCvCameraView));
+                onBackPressed();
                 finish();
             }, 5000);
         });
@@ -592,4 +603,36 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
         }
         return flag_drowsy;
     }
+
+    private Bitmap takeScreenshot(View v1) {
+        Date now = new Date();
+        android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+
+        try {
+            // image naming and path  to include sd card  appending name you choose for file
+            String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
+
+            // create bitmap screen capture
+            v1.setDrawingCacheEnabled(true);
+            v1.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+            v1.buildDrawingCache();
+            Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+            v1.setDrawingCacheEnabled(false);
+            v1.destroyDrawingCache();
+
+            File imageFile = new File(mPath);
+
+            FileOutputStream outputStream = new FileOutputStream(imageFile);
+            int quality = 100;
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            outputStream.flush();
+            outputStream.close();
+            return bitmap;
+        } catch (Throwable e) {
+            // Several error may come out with file handling or DOM
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

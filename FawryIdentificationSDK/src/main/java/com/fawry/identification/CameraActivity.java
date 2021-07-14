@@ -21,6 +21,7 @@ import android.media.ImageReader.OnImageAvailableListener;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Trace;
@@ -46,6 +47,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.fawry.identification.tflite.OpjectsModels;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.fawry.identification.env.ImageUtils;
 import com.fawry.identification.env.Logger;
@@ -55,8 +57,11 @@ import com.fawry.identification.tflite.Classifier.Recognition;
 
 import org.opencv.core.Mat;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public abstract class CameraActivity extends AppCompatActivity
@@ -103,6 +108,8 @@ public abstract class CameraActivity extends AppCompatActivity
   private int yRowStride;
   private Runnable postInferenceCallback;
   private Runnable imageConverter;
+
+  private OpjectsModels opjectsModels;
 
 //  private LinearLayout bottomSheetLayout;
 //  private LinearLayout gestureLayout;
@@ -570,7 +577,7 @@ public abstract class CameraActivity extends AppCompatActivity
           Log.e("Ahmed", String.valueOf(recognition.getConfidence()));
 //          recognitionValueTextView.setText(String.format("%.2f", (100 * recognition.getConfidence())) + "%");
           float confi = 100 * recognition.getConfidence();
-          if (!frontID && recognitionTextView.equalsIgnoreCase("FrontIDCard") && confi > 90 ) {
+          if (!frontID && recognitionTextView.equalsIgnoreCase("FrontIDCard") && confi > 98 ) {
             frontID =true;
             backID = false;
             Log.e("Ahmed", "FrontIDCard: " +String.valueOf(confi));
@@ -588,6 +595,8 @@ public abstract class CameraActivity extends AppCompatActivity
               public void onAnimationEnd(Animator animation) {
 
                 mTextTess.setText(recognition.getTitle());
+                opjectsModels.setFrontConfig(String.valueOf(confi));
+                opjectsModels.setFrontIDImage(takeScreenshot(mFrame));
                 Intent intent = new Intent(CameraActivity.this, ClassifierActivity2.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -608,6 +617,37 @@ public abstract class CameraActivity extends AppCompatActivity
           }
         }
       }
+    }
+  }
+
+  private Bitmap takeScreenshot(View v1) {
+    Date now = new Date();
+    android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+
+    try {
+      // image naming and path  to include sd card  appending name you choose for file
+      String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
+
+      // create bitmap screen capture
+      v1.setDrawingCacheEnabled(true);
+      v1.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+      v1.buildDrawingCache();
+      Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+      v1.setDrawingCacheEnabled(false);
+      v1.destroyDrawingCache();
+
+      File imageFile = new File(mPath);
+
+      FileOutputStream outputStream = new FileOutputStream(imageFile);
+      int quality = 100;
+      bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+      outputStream.flush();
+      outputStream.close();
+      return bitmap;
+    } catch (Throwable e) {
+      // Several error may come out with file handling or DOM
+      e.printStackTrace();
+      return null;
     }
   }
 
