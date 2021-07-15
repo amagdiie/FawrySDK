@@ -558,8 +558,8 @@ public abstract class CameraActivity2 extends AppCompatActivity
                             @Override
                             public void onAnimationEnd(Animator animation) {
                                 mTextTess.setText(recognition.getTitle());
-                                BackConfig = (String.valueOf(confi));
-                                BackIDImage = (takeScreenshot(mFrame));
+                                OpjectsModels.BackConfig = (String.valueOf(confi));
+                                OpjectsModels.BackIDImage = (takeScreenshot(findViewById(R.id.masterWindow)));
                                 Intent intent = new Intent(CameraActivity2.this, FdActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);

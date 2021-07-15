@@ -269,7 +269,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
                 AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 10, 0);
                 beep.start();
-                CloseEYEImage = (takeScreenshot(mOpenCvCameraView));
+                OpjectsModels.CloseEYEImage = (takeScreenshot(findViewById(R.id.masterWindow)));
                 checkSecound();
             }, 5000);
         });
@@ -290,7 +290,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
                 AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 10, 0);
                 beep.start();
-                OpenEYEImage = (takeScreenshot(mOpenCvCameraView));
+                OpjectsModels.OpenEYEImage = (takeScreenshot(findViewById(R.id.masterWindow)));
                 onBackPressed();
                 finish();
             }, 5000);
