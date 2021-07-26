@@ -596,9 +596,8 @@ public abstract class CameraActivity extends AppCompatActivity
               public void onAnimationEnd(Animator animation) {
 
                 mTextTess.setText(recognition.getTitle());
-                OpjectsModels.FrontConfig = String.valueOf(confi);
-                OpjectsModels.FrontIDImage = takeScreenshot(findViewById(R.id.masterWindow));
-                Intent intent = new Intent(CameraActivity.this, ClassifierActivity2.class);
+
+                Intent intent = new Intent(CameraActivity.this, ReadTextFromImageActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();

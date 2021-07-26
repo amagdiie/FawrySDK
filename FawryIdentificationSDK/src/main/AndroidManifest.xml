@@ -7,15 +7,17 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus"
-        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission
         android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
 
     <application
@@ -24,11 +26,12 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="FdActivity"
+        <activity android:name=".ReadTextFromImageActivity"></activity>
+        <activity
+            android:name=".FdActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:configChanges="keyboardHidden|orientation"/>
-
+            android:screenOrientation="landscape" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,6 +47,6 @@
             android:name=".ClassifierActivity2"
             android:label="@string/activity_name_classification2"
             android:screenOrientation="fullSensor" />
-
     </application>
+
 </manifest>
