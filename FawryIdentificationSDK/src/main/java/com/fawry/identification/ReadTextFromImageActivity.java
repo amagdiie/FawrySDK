@@ -45,7 +45,6 @@ public class ReadTextFromImageActivity extends BaseActivity implements CameraBri
     public int i;
     public ArrayList<Uri> mArrayUri;
     private Bitmap bitmap;
-    private TextToSpeech tts;
 
     CameraBridgeViewBase mOpenCvCameraView;
 
@@ -99,15 +98,11 @@ public class ReadTextFromImageActivity extends BaseActivity implements CameraBri
         if (mOpenCvCameraView != null) {
             mOpenCvCameraView.disableView();
         }
-        tts.stop();
-
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        tts.stop();
-
     }
 
     @Override
@@ -120,8 +115,6 @@ public class ReadTextFromImageActivity extends BaseActivity implements CameraBri
             Log.d(TAG, "OpenCV library found inside package. Using it!");
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }
-        tts.stop();
-
     }
 
     public void onDestroy() {
@@ -129,7 +122,6 @@ public class ReadTextFromImageActivity extends BaseActivity implements CameraBri
         if (mOpenCvCameraView != null) {
             mOpenCvCameraView.disableView();
         }
-        tts.stop();
     }
 
     public void onCameraViewStarted(int width, int height) {
