@@ -76,11 +76,9 @@ dependencies {
 
 //    implementation 'com.darwin.viola:still:1.1.1'
 
-    implementation platform('com.google.firebase:firebase-bom:28.3.0')
     implementation 'com.google.android.gms:play-services-vision:20.1.3'
-    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:16.3.0'
 
-    implementation 'com.google.mlkit:image-labeling:16.2.0'
+    implementation 'com.google.mlkit:image-labeling:17.0.5'
 
 
 }
